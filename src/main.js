@@ -21,11 +21,6 @@ new Vue({
   render: h => h(App),
   created () {
     firebase.initializeApp({
-      apiKey: 'AIzaSyChjXWktAmXsdb718imZY_bXFy6fRGlDy4',
-      authDomain: 'sportspredgifford1.firebaseapp.com',
-      databaseURL: 'https://sportspredgifford1.firebaseio.com',
-      projectId: 'sportspredgifford1',
-      storageBucket: ''
     })
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {

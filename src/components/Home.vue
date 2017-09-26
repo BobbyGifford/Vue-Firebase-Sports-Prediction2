@@ -7,8 +7,18 @@
     </v-layout>
     <v-layout row>
       <v-flex xs12>
-        <app-sign-up-dialog></app-sign-up-dialog>
+        <app-sign-up-dialog v-if="!isNotUser"></app-sign-up-dialog>
       </v-flex>
     </v-layout>
   </v-container>
 </template>
+
+<script>
+export default {
+  computed: {
+    isNotUser () {
+      return this.$store.getters.getUser !== null && this.$store.getters.getUser !== undefined
+    }
+  }
+}
+</script>

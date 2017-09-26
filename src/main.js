@@ -20,5 +20,18 @@ new Vue({
   store,
   render: h => h(App),
   created () {
+    firebase.initializeApp({
+      apiKey: 'AIzaSyChjXWktAmXsdb718imZY_bXFy6fRGlDy4',
+      authDomain: 'sportspredgifford1.firebaseapp.com',
+      databaseURL: 'https://sportspredgifford1.firebaseio.com',
+      projectId: 'sportspredgifford1',
+      storageBucket: ''
+    })
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        this.$store.dispatch('autoSignIn', user)
+        console.log('signed in')
+      }
+    })
   }
 })

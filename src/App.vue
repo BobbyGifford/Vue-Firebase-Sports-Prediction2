@@ -6,6 +6,7 @@
       dark
       enable-resize-watcher
       temporary
+      v-if="isUser"
     >
       <v-list dense>
         <v-list-tile 
@@ -20,6 +21,15 @@
             <v-list-tile-title>{{ item.title }}</v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
+        <v-list-tile>
+          <v-list-tile-action @click="logout">
+            <v-icon>exit_to_app</v-icon>
+          </v-list-tile-action>
+          <v-list-tile-content>
+            <v-list-tile-title>Log Out</v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
+
       </v-list>
     </v-navigation-drawer>
     <v-toolbar dark fixed>
@@ -35,6 +45,10 @@
           <v-icon left>{{ item.icon }}</v-icon>
           {{ item.title }}
           </v-btn>
+          <v-btn @click="logout" v-if="isUser">
+            <v-icon left datk>exit_to_app</v-icon>
+            Logout
+          </v-btn>
       </v-toolbar-items>
     </v-toolbar>
     <main>
@@ -49,10 +63,25 @@
   export default {
     data () {
       return {
-        drawer: false,
-        navItems: [
-          { icon: 'code', title: 'List', link: '/predictionList' }
-        ]
+        drawer: false
+      }
+    },
+    computed: {
+      navItems () {
+        let navItems = null
+        if (this.isUser) {
+          navItems = [{ icon: 'code', title: 'List', link: '/predictionList' }]
+        }
+        return navItems
+      },
+      isUser () {
+        return this.$store.getters.getUser !== null && this.$store.getters.getUser !== undefined
+      }
+    },
+    methods: {
+      logout () {
+        this.$store.dispatch('logout')
+        this.$router.push('/')
       }
     }
   }

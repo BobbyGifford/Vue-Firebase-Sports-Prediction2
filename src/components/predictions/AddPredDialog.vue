@@ -1,13 +1,12 @@
 <template>
   <v-dialog height="500px" width="500px" persistent v-model="toggleDialog">
-    <v-btn slot="activator">
-      <v-icon left>grade</v-icon>
-      Make Prediction
-      <v-icon right>grade</v-icon>
+    <v-btn fab slot="activator">
+      <v-icon>add</v-icon>
     </v-btn>
 
   <v-card>
     <v-container>
+      <v-form @submit.prevent="add">
       <v-layout row>
         <v-flex 12>
           <v-card-title>
@@ -35,7 +34,7 @@
           <v-layout>
             <v-flex>
               <v-card-actions>
-                <v-btn class="info" @click="save">Save</v-btn>
+                <v-btn class="info" :disabled="!isValid" @click="add">Add</v-btn>
                 <v-spacer></v-spacer>
                 <v-btn @click="toggleDialog = false">Cancel</v-btn>
               </v-card-actions>
@@ -43,6 +42,7 @@
           </v-layout>
         </v-flex>
       </v-layout>
+      </v-form>
     </v-container>
   </v-card>
   </v-dialog>
@@ -58,10 +58,18 @@ export default {
       description: ''
     }
   },
+  computed: {
+    isValid () {
+      return this.title !== ''
+    }
+  },
   methods: {
-    save () {
+    add () {
       if (this.title.trim() === '') {
         return
+      }
+      if (this.description.trim() === '') {
+        this.description = null
       }
       const newPrediction = {
         title: this.title,
@@ -69,6 +77,7 @@ export default {
       }
       this.$store.dispatch('createPrediction', newPrediction)
       this.toggleDialog = false
+      this.$router.push('/predictionList')
     }
   }
 }

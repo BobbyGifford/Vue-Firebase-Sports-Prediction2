@@ -6,6 +6,7 @@ Vue.use(Vuex)
 
 export const store = new Vuex.Store({
   state: {
+    username: null,
     predictions: [
       {
         title: 'Example A Title',
@@ -27,8 +28,14 @@ export const store = new Vuex.Store({
     error: null
   },
   mutations: {
+    setPredictionList (state, payload) {
+      state.predictions = payload
+    },
     setUser (state, payload) {
       state.user = payload
+    },
+    setUsername (state, payload) {
+      state.user.username = payload
     },
     setLoading (state, payload) {
       state.loading = payload
@@ -43,12 +50,22 @@ export const store = new Vuex.Store({
         title: payload.title,
         description: payload.description,
         creatorId: getters.getUser.id,
-        voted: null,
-        id: 'a1'
+        voted: 0
       }
-      commit('createPrediction', newPrediction)
+      let key
+      firebase.database().ref('predictionList').push(newPrediction)
+      .then((data) => {
+        key = data.key
+        return key
+      })
+      .then(() => {
+        commit('createPrediction', {...newPrediction, id: key})
+      })
+      .catch(error => {
+        console.log(error)
+      })
     },
-    createUser ({commit}, payload) {
+    createUser ({commit, getters}, payload) {
       commit('setLoading', true)
       firebase.auth().createUserWithEmailAndPassword(payload.email, payload.password)
         .then(
@@ -58,7 +75,7 @@ export const store = new Vuex.Store({
               id: user.uid
             }
             commit('setUser', newUser)
-          }
+          },
         )
         .catch(
           error => {
@@ -67,13 +84,54 @@ export const store = new Vuex.Store({
           }
         )
     },
+    signIn ({commit, getters}, payload) {
+      commit('setLoading', true)
+      firebase.auth().signInWithEmailAndPassword(payload.email, payload.password)
+      .then(
+        user => {
+          commit('setLoading', false)
+          const returningUser = {
+            id: user.uid
+          }
+          commit('setUser', returningUser)
+        }
+      )
+      .catch(
+        error => {
+          commit('setLoading', true)
+          console.log(error)
+        }
+      )
+    },
     autoSignIn ({commit}, payload) {
-      commit('setUser', {id: payload.id})
+      commit('setUser', {id: payload.uid})
+    },
+    loadPredictions ({commit}) {
+      commit('setLoading', true)
+      firebase.database().ref('predictionList').once('value')
+      .then((data) => {
+        const list = []
+        const obj = data.val()
+        for (let key in obj) {
+          list.push({
+            id: key,
+            title: obj[key].title,
+            description: obj[key].description,
+            creatorId: obj[key].creatorId,
+            voted: obj[key].voted
+          })
+        }
+        commit('setPredictionList', list)
+        commit('setLoading', true)
+      })
+      .catch((error) => {
+        console.log(error)
+        commit('setLoading', false)
+      })
     },
     logout ({commit}) {
       firebase.auth().signOut()
       commit('setUser', null)
-      console.log(this.user)
     }
   },
   getters: {

@@ -7,11 +7,13 @@ import { store } from './store'
 import * as firebase from 'firebase'
 import AddPrediction from './components/predictions/AddPredDialog.vue'
 import SignUpDialog from './components/user/SignUpDialog'
+import SignInDialog from './components/user/SignInDialog'
 
 Vue.use(Vuetify)
 Vue.config.productionTip = false
 Vue.component('add-prediction', AddPrediction)
 Vue.component('app-sign-up-dialog', SignUpDialog)
+Vue.component('app-sign-in-dialog', SignInDialog)
 
 /* eslint-disable no-new */
 new Vue({
@@ -28,5 +30,6 @@ new Vue({
         console.log('signed in')
       }
     })
+    this.$store.dispatch('loadPredictions')
   }
 })

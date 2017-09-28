@@ -1,11 +1,12 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Home from '@/components/Home'
-import PredictionList from '@/components/predictions/FullList'
-import PredictionItem from '@/components/predictions/PredItem'
+import PredictionList from '@/components/predictions/categories/FullList'
+import PredictionItem from '@/components/predictions/categories/PredItem'
+import NFL from '@/components/predictions/categories/NFL'
+import College from '@/components/predictions/categories/College'
 import AddPrediction from '@/components/predictions/AddPred'
-import SignIn from '@/components/user/SignIn'
-import SignUp from '@/components/user/SignUp'
+import Edit from '@/components/predictions/Edit'
 
 Vue.use(Router)
 
@@ -33,14 +34,19 @@ export default new Router({
       component: AddPrediction
     },
     {
-      path: '/signIn',
-      name: 'SignIn',
-      component: SignIn
+      path: '/NFL',
+      name: 'NFL',
+      component: NFL
     },
     {
-      path: '/SignUp',
-      name: 'SignUp',
-      component: SignUp
+      path: '/edit',
+      name: 'edit',
+      component: Edit
+    },
+    {
+      path: '/college',
+      name: 'college',
+      component: College
     }
   ],
   mode: 'history'

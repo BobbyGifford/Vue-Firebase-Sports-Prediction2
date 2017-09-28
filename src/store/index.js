@@ -8,21 +8,18 @@ export const store = new Vuex.Store({
   state: {
     username: null,
     predictions: [
-      {
-        title: 'Example A Title',
-        description: 'Example A body',
-        id: 'idOfItem',
-        creatorId: 'newCreator',
-        voted: null
-      },
-      {
-        title: 'Example B Title',
-        description: null,
-        id: 'idOfItem2',
-        creatorId: 'newCreator',
-        voted: null
-      }
+      // {
+      //   title: 'Example A Title',
+      //   description: 'Example A body',
+      //   id: 'idOfItem',
+      //   creatorId: 'newCreator',
+      //   voted: false,
+      //   agree: 0,
+      //   disagree: 0
+      // }
     ],
+    nfl: [],
+    collegeFootball: [],
     user: null,
     loading: null,
     error: null
@@ -34,23 +31,27 @@ export const store = new Vuex.Store({
     setUser (state, payload) {
       state.user = payload
     },
-    setUsername (state, payload) {
-      state.user.username = payload
-    },
     setLoading (state, payload) {
       state.loading = payload
     },
     createPrediction (state, payload) {
       state.predictions.push(payload)
+    },
+    setNFL (state, payload) {
+      state.nfl = payload
+    },
+    setCollegeFootball (state, payload) {
+      state.collegeFootball = payload
     }
   },
   actions: {
     createPrediction ({commit, getters}, payload) {
       const newPrediction = {
         title: payload.title,
-        description: payload.description,
         creatorId: getters.getUser.id,
-        voted: 0
+        category: payload.category,
+        agree: payload.agree,
+        disagree: payload.disagree
       }
       let key
       firebase.database().ref('predictionList').push(newPrediction)
@@ -72,7 +73,8 @@ export const store = new Vuex.Store({
           user => {
             commit('setLoading', false)
             const newUser = {
-              id: user.uid
+              id: user.uid,
+              userVoteInfo: []
             }
             commit('setUser', newUser)
           },
@@ -91,7 +93,8 @@ export const store = new Vuex.Store({
         user => {
           commit('setLoading', false)
           const returningUser = {
-            id: user.uid
+            id: user.uid,
+            userVoteInfo: []
           }
           commit('setUser', returningUser)
         }
@@ -106,23 +109,48 @@ export const store = new Vuex.Store({
     autoSignIn ({commit}, payload) {
       commit('setUser', {id: payload.uid})
     },
-    loadPredictions ({commit}) {
+    loadPredictions ({commit, getters}) {
       commit('setLoading', true)
       firebase.database().ref('predictionList').once('value')
       .then((data) => {
         const list = []
+        const nfl = []
+        const college = []
         const obj = data.val()
         for (let key in obj) {
+          if (obj[key].category === 'NFL') {
+            nfl.push({
+              id: key,
+              title: obj[key].title,
+              creatorId: obj[key].creatorId,
+              category: obj[key].category,
+              agree: obj[key].agree,
+              disagree: obj[key].disagree
+            })
+          }
+          if (obj[key].category === 'College Football') {
+            college.push({
+              id: key,
+              title: obj[key].title,
+              creatorId: obj[key].creatorId,
+              category: obj[key].category,
+              agree: obj[key].agree,
+              disagree: obj[key].disagree
+            })
+          }
           list.push({
             id: key,
             title: obj[key].title,
-            description: obj[key].description,
             creatorId: obj[key].creatorId,
-            voted: obj[key].voted
+            category: obj[key].category,
+            agree: obj[key].agree,
+            disagree: obj[key].disagree
           })
         }
-        commit('setPredictionList', list)
         commit('setLoading', true)
+        commit('setPredictionList', list)
+        commit('setNFL', nfl)
+        commit('setCollegeFootball', college)
       })
       .catch((error) => {
         console.log(error)
@@ -153,6 +181,12 @@ export const store = new Vuex.Store({
     },
     getError (state) {
       return state.error
+    },
+    getNFL (state) {
+      return state.nfl
+    },
+    getCollegeFootball (state) {
+      return state.collegeFootball
     }
   }
 })

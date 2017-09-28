@@ -35,7 +35,7 @@
     <v-toolbar dark fixed>
       <v-toolbar-side-icon class="hidden-sm-and-up" @click.stop="drawer = !drawer"></v-toolbar-side-icon>
       <v-toolbar-title>
-        <router-link to="/" tag="span" style="cursor: pointer"> <v-icon left class="mr-2">home</v-icon>Bold Predictions</router-link>
+        <router-link to="/" tag="span" style="cursor: pointer"> <v-icon left class="ml-2">home</v-icon></router-link>
       </v-toolbar-title>
       <v-spacer></v-spacer>
       <v-toolbar-items class="hidden-xs-only pb-1 pt-1">
@@ -70,7 +70,12 @@
       navItems () {
         let navItems = null
         if (this.isUser) {
-          navItems = [{ icon: 'code', title: 'List', link: '/predictionList' }]
+          navItems = [
+            { icon: 'filter_3', title: 'NCAAF', link: '/college' },
+            { icon: 'filter_2', title: 'NFL', link: '/NFL' },
+            { icon: 'filter_1', title: 'All', link: '/predictionList' },
+            { icon: 'add', title: 'Add', link: '/addPrediction' }
+          ]
         }
         return navItems
       },

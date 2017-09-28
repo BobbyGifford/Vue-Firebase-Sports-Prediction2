@@ -1,9 +1,13 @@
 <template>
   <v-container>
     <v-layout row>
-      <v-flex xs3 offset-xs9 mb-2 class="hidden-sm-and-up">
-        <add-prediction></add-prediction>
+      <v-flex xs11>
+        <h1>
+          Full List
+        </h1>
       </v-flex>
+      <v-flex xs1 class="mt-4 hidden-xs-only">
+        <add-prediction></add-prediction></v-flex>
     </v-layout>
 
     <v-layout row wrap>
@@ -15,18 +19,18 @@
                   </div>
                 </v-card-title>
                 <v-card-text>
+                  <h5>Category: {{ item.category }}</h5>
                 </v-card-text>
                 <v-card-actions>
-                  <v-btn @click="changeVote(index, 1)"><v-icon>thumb_up</v-icon></v-btn>
-                  <v-spacer></v-spacer>
-                  <v-btn><v-icon>thumbs_up_down</v-icon></v-btn>
-                  <v-spacer></v-spacer>
-                  <v-btn><v-icon>thumb_down</v-icon></v-btn>
-                  <!-- <v-btn class="success ml-2" :to="'/predictionItem/' + item.id">
-                    Vote
-                  </v-btn> -->
+                  <app-to-edit :item="item"></app-to-edit>
                 </v-card-actions>
         </v-card>
+      </v-flex>
+    </v-layout>
+
+    <v-layout>
+      <v-flex>
+        <add-prediction></add-prediction>
       </v-flex>
     </v-layout>
   </v-container>
@@ -34,12 +38,6 @@
 
 <script>
 export default {
-  methods: {
-    changeVote (index, vote) {
-      console.log('Index of Item: ' + index)
-      console.log('Vote: ' + vote)
-    }
-  },
   computed: {
     getPredictionList () {
       return this.$store.getters.getPredictions

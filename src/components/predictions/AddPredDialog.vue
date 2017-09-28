@@ -7,8 +7,8 @@
   <v-card>
     <v-container>
       <v-form @submit.prevent="add">
-      <v-layout row>
-        <v-flex 12>
+      <v-layout>
+        <v-flex>
           <v-card-title>
             Make A Prediction
           </v-card-title>
@@ -22,12 +22,14 @@
                 v-model="title"
                 required>
                 </v-text-field>
-                <v-text-field
-                name="description"
-                id="description"
-                label="Description (optional)"
-                v-model="description">
-                </v-text-field>
+                <v-select v-bind:items="categories"
+                v-model="category"
+                label="Pick A Category"
+                item-value="text"
+                single-line
+                bottom
+                required>
+              </v-select>
               </v-card-text>
             </v-flex>
           </v-layout>
@@ -55,7 +57,11 @@ export default {
     return {
       toggleDialog: false,
       title: '',
-      description: ''
+      category: null,
+      categories: [
+        { text: 'NFL' },
+        { text: 'College Football' }
+      ]
     }
   },
   computed: {
@@ -68,16 +74,15 @@ export default {
       if (this.title.trim() === '') {
         return
       }
-      if (this.description.trim() === '') {
-        this.description = null
-      }
       const newPrediction = {
         title: this.title,
-        description: this.description
+        category: this.category,
+        agree: 0,
+        disagree: 0
       }
       this.$store.dispatch('createPrediction', newPrediction)
       this.toggleDialog = false
-      this.$router.push('/predictionList')
+      this.$router.push('/')
     }
   }
 }

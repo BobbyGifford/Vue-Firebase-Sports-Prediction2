@@ -28,6 +28,15 @@ export default {
   computed: {
     individualPrediction () {
       return this.$store.getters.getPrediction(this.id)
+    },
+    isUser () {
+      return this.$store.getters.getUser !== null && this.$store.getters.getUser !== undefined
+    },
+    isCreator () {
+      if (!this.isUser) {
+        return false
+      }
+      return this.$store.getters.getUser.id === this.individualPrediction.creatorId
     }
   }
 }

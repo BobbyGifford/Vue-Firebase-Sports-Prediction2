@@ -1,7 +1,7 @@
 <template>
   <v-dialog height="500px" width="500px" persistent v-model="toggleDialog">
-    <v-btn fab slot="activator">
-      <v-icon>add</v-icon>
+    <v-btn slot="activator">
+      <v-icon>edit</v-icon>
     </v-btn>
 
   <v-card>
@@ -10,7 +10,7 @@
       <v-layout>
         <v-flex>
           <v-card-title>
-            Make A Prediction
+            Change Prediction
           </v-card-title>
           <v-layout>
             <v-flex>
@@ -22,7 +22,10 @@
                 v-model="title"
                 required>
                 </v-text-field>
-                <v-select v-bind:items="categories"
+                <label for="category">Change Category</label>
+                <v-select
+                id="category" 
+                v-bind:items="categories"
                 v-model="category"
                 label="Pick A Category"
                 item-value="text"
@@ -36,7 +39,7 @@
           <v-layout>
             <v-flex>
               <v-card-actions>
-                <v-btn class="info" :disabled="!isValid" @click="add">Add</v-btn>
+                <v-btn class="info" @click="edit">Edit</v-btn>
                 <v-spacer></v-spacer>
                 <v-btn @click="toggleDialog = false">Cancel</v-btn>
               </v-card-actions>
@@ -52,37 +55,34 @@
 
 <script>
 export default {
-  props: ['prediction'],
+  props: ['item'],
   data () {
     return {
       toggleDialog: false,
-      title: '',
-      category: null,
+      title: this.item.title,
+      category: this.item.category,
       categories: [
         { text: 'NFL' },
         { text: 'College Football' }
       ]
     }
   },
-  computed: {
-    isValid () {
-      return this.title !== ''
-    }
-  },
   methods: {
-    add () {
-      if (this.title.trim() === '') {
+    edit () {
+      if (this.title.trim() === '' || this.category.trim() === '') {
         return
       }
-      const newPrediction = {
+      const prediction = {
         title: this.title,
-        category: this.category,
+        category: this.prediction,
+        id: this.item.id,
         agree: 0,
         disagree: 0
       }
-      this.$store.dispatch('createPrediction', newPrediction)
+      this.$store.dispatch('editPrediction', prediction)
       this.toggleDialog = false
-      this.$router.push('/')
+      console.log(prediction)
+      location.reload()
     }
   }
 }

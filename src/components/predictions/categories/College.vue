@@ -1,30 +1,14 @@
 <template>
   <v-container>
-    <v-layout row>
-        <v-flex>
-            <h1>
-                College
-            </h1>
-        </v-flex>
-      <v-flex xs3 offset-xs9 mb-2 class="hidden-sm-and-up">
-        <add-prediction></add-prediction>
+    <v-layout row wrap>
+      <v-flex text-xs-center>
+        <h1 class="ma-3">College Football</h1>
+        <app-add-here class="mb-2" :category="'College Football'"></app-add-here>
       </v-flex>
     </v-layout>
-
     <v-layout row wrap>
       <v-flex xs12>
-        <v-card v-for="(item, index) in getCollegeFootball" :key="item.id" class="mb-2">
-                <v-card-title primary-title>
-                  <div>
-                    <h2 class="mb-0">{{ item.title }} </h2>
-                  </div>
-                </v-card-title>
-                <v-card-text>
-                  <h5>Category: {{ item.category }}</h5>
-                </v-card-text>
-                <v-card-actions>
-                </v-card-actions>
-        </v-card>
+        <app-list :categoryList="getCollegeFootball"></app-list>
       </v-flex>
     </v-layout>
   </v-container>

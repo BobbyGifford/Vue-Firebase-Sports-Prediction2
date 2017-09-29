@@ -8,6 +8,7 @@
     <v-form @submit.prevent="add">
       <v-layout>
         <v-flex>
+          <label for="title">Make a prediction</label>
           <v-text-field
             name="title"
             id="title"
@@ -15,7 +16,9 @@
             v-model="title"
             required>
           </v-text-field>
+          <label for="category">Pick a Category</label>
           <v-select 
+            id="category"
             v-bind:items="categories"
             v-model="category"
             label="Pick A Category"
@@ -41,7 +44,7 @@ export default {
   data () {
     return {
       title: '',
-      category: null,
+      category: 'NFL',
       categories: [
         { text: 'NFL' },
         { text: 'College Football' }
@@ -66,7 +69,7 @@ export default {
       }
       this.$store.dispatch('createPrediction', newPrediction)
       this.toggleDialog = false
-      this.$router.push('/')
+      this.$router.push('/predictionList')
     }
   }
 }

@@ -37,11 +37,31 @@ export const store = new Vuex.Store({
     createPrediction (state, payload) {
       state.predictions.push(payload)
     },
+    editPrediction (state, payload) {
+      const editItem = state.predictions.find(item => {
+        return item.id === payload.id
+      })
+      if (payload.title) {
+        editItem.title = payload.title
+      }
+      if (payload.category) {
+        editItem.category = payload.category
+      }
+    },
     setNFL (state, payload) {
       state.nfl = payload
     },
     setCollegeFootball (state, payload) {
       state.collegeFootball = payload
+    },
+    addNFL (state, payload) {
+      state.nfl.push(payload)
+    },
+    addCollegeFootball (state, payload) {
+      state.collegeFootball.push(payload)
+    },
+    addPrediction (state, payload) {
+      state.predictions.push(payload)
     }
   },
   actions: {
@@ -52,6 +72,12 @@ export const store = new Vuex.Store({
         category: payload.category,
         agree: payload.agree,
         disagree: payload.disagree
+      }
+      if (payload.category === 'NFL') {
+        commit('addNFL', newPrediction)
+      }
+      if (payload.category === 'College Football') {
+        commit('addCollegeFootball', newPrediction)
       }
       let key
       firebase.database().ref('predictionList').push(newPrediction)
@@ -156,6 +182,22 @@ export const store = new Vuex.Store({
         console.log(error)
         commit('setLoading', false)
       })
+    },
+    editPrediction ({commit}, payload) {
+      commit('setLoading', true)
+      const object = {}
+      if (payload.title) {
+        object.title = payload.title
+      }
+      if (payload.category) {
+        object.category = payload.category
+      }
+      firebase.database().ref('predictionList').child(payload.id).update(object)
+      .then((data) => {
+        commit('setLoading', false)
+        commit('editPrediction', payload)
+      })
+      .catch(error => console.log(error))
     },
     logout ({commit}) {
       firebase.auth().signOut()

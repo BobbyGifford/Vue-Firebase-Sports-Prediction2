@@ -6,7 +6,6 @@ import PredictionItem from '@/components/predictions/categories/PredItem'
 import NFL from '@/components/predictions/categories/NFL'
 import College from '@/components/predictions/categories/College'
 import AddPrediction from '@/components/predictions/AddPred'
-import Edit from '@/components/predictions/Edit'
 
 Vue.use(Router)
 
@@ -37,11 +36,6 @@ export default new Router({
       path: '/NFL',
       name: 'NFL',
       component: NFL
-    },
-    {
-      path: '/edit',
-      name: 'edit',
-      component: Edit
     },
     {
       path: '/college',

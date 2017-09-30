@@ -69,6 +69,7 @@ export default {
       }
       this.$store.dispatch('createPrediction', newPrediction)
       this.toggleDialog = false
+      this.$store.dispatch('loadPredictions')
     }
   }
 }

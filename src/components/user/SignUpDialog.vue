@@ -83,6 +83,7 @@ export default {
       this.toggleDialog = false
       this.$store.dispatch('createUser', {email: this.email, password: this.password})
       this.$store.dispatch('loadPredictions')
+      this.$forceUpdate()
     }
   }
 }

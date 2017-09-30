@@ -1,18 +1,32 @@
 <template>
     <v-layout>
-      <v-flex>
+      <v-flex md8 offset-md2>
         <v-card v-for="(item, index) in categoryList" :key="item.id" class="mb-2">
-          <v-card-title primary-title>
-            <h2 class="mb-0">{{ item.title }} </h2>
-          </v-card-title>
-          <v-card-text>
-            <h5>Category: {{ item.category }}</h5>
-          </v-card-text>
-          <v-card-actions>
-            <template v-if="isCreator === item.creatorId">
-            <app-edit-dialog :item="item"></app-edit-dialog>
-            </template>
-          </v-card-actions>
+          <v-layout>
+            <v-flex>
+              <v-card-title primary-title>
+                <h2 class="mb-0">{{ item.title }} </h2>
+              </v-card-title>
+            </v-flex>
+          </v-layout>
+          <v-layout>
+            <v-flex>
+            <v-card-text>
+              <h5>Category: {{ item.category }}</h5>
+            </v-card-text>
+            </v-flex>
+          </v-layout>
+          <v-layout>
+            <v-flex>
+            <v-card-actions>
+              <template v-if="isCreator === item.creatorId">
+                <v-spacer></v-spacer>
+                <app-edit-dialog :item="item"></app-edit-dialog>
+                <app-delete-button :itemId="item.id"></app-delete-button>
+              </template>
+            </v-card-actions>
+            </v-flex>
+          </v-layout>
         </v-card>
       </v-flex>
     </v-layout>

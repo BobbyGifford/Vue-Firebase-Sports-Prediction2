@@ -1,9 +1,12 @@
 <template>
-  <v-container class="text-xs-center">
+  <v-container text-xs-center>
     <v-layout row>
-      <v-flex xs12>
-        <h1>Share your opinion</h1>
-        <h2 v-if="isUser">You're Signed In</h2>
+      <v-flex xs12 v-if="isUser">
+        <h1>Create a prediction</h1>
+      </v-flex>
+      <v-flex xs12 v-else> 
+        <h1>Sign In or</h1>
+        <h1>Sign Up</h1>
       </v-flex>
     </v-layout>
     <v-layout row v-if="!isUser">

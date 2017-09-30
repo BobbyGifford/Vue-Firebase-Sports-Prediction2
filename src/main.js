@@ -11,6 +11,7 @@ import SignInDialog from './components/user/SignInDialog'
 import ListFormat from './components/predictions/categories/PredictionListFormat'
 import EditDialog from './components/buttons_dialogs/EditDialog'
 import AddHere from './components/buttons_dialogs/AddHere'
+import DeleteButton from './components/buttons_dialogs/DeleteButton'
 
 Vue.use(Vuetify)
 Vue.config.productionTip = false
@@ -20,6 +21,7 @@ Vue.component('app-sign-in-dialog', SignInDialog)
 Vue.component('app-edit-dialog', EditDialog)
 Vue.component('app-list', ListFormat)
 Vue.component('app-add-here', AddHere)
+Vue.component('app-delete-button', DeleteButton)
 
 /* eslint-disable no-new */
 new Vue({
@@ -29,13 +31,16 @@ new Vue({
   render: h => h(App),
   created () {
     firebase.initializeApp({
+      apiKey: 'AIzaSyChjXWktAmXsdb718imZY_bXFy6fRGlDy4',
+      databaseURL: 'https://sportspredgifford1.firebaseio.com',
+      projectId: 'sportspredgifford1',
+      storageBucket: 'sportspredgifford1.appspot.com'
     })
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
+        this.$store.dispatch('loadPredictions')
         this.$store.dispatch('autoSignIn', user)
-        console.log('signed in')
       }
     })
-    this.$store.dispatch('loadPredictions')
   }
 })

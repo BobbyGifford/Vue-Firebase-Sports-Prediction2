@@ -8,15 +8,7 @@
     <v-form @submit.prevent="add">
       <v-layout>
         <v-flex>
-          <label for="title">Make a prediction</label>
-          <v-text-field
-            name="title"
-            id="title"
-            label="Prediction"
-            v-model="title"
-            required>
-          </v-text-field>
-          <label for="category">Pick a Category</label>
+          <label for="category">Select a category from the dropdown below</label>
           <v-select 
             id="category"
             v-bind:items="categories"
@@ -27,6 +19,13 @@
             bottom
             required>
           </v-select>
+          <v-text-field
+            name="title"
+            id="title"
+            label="Enter you prediction here"
+            v-model="title"
+            required>
+          </v-text-field>
         </v-flex>
       </v-layout>
       <v-layout row>
@@ -69,7 +68,7 @@ export default {
       }
       this.$store.dispatch('createPrediction', newPrediction)
       this.toggleDialog = false
-      this.$router.push('/predictionList')
+      this.$store.dispatch('loadPredictions')
     }
   }
 }

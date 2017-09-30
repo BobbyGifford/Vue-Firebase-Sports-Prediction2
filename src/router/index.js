@@ -6,6 +6,7 @@ import PredictionItem from '@/components/predictions/categories/PredItem'
 import NFL from '@/components/predictions/categories/NFL'
 import College from '@/components/predictions/categories/College'
 import AddPrediction from '@/components/predictions/AddPred'
+import AuthGuard from './auth-guard'
 
 Vue.use(Router)
 
@@ -20,27 +21,32 @@ export default new Router({
       path: '/predictionItem/:id',
       props: true,
       name: 'PredictionItem',
-      component: PredictionItem
+      component: PredictionItem,
+      beforeEnter: AuthGuard
     },
     {
       path: '/predictionList',
       name: 'PredictionList',
-      component: PredictionList
+      component: PredictionList,
+      beforeEnter: AuthGuard
     },
     {
       path: '/addPrediction',
       name: 'AddPrediction',
-      component: AddPrediction
+      component: AddPrediction,
+      beforeEnter: AuthGuard
     },
     {
       path: '/NFL',
       name: 'NFL',
-      component: NFL
+      component: NFL,
+      beforeEnter: AuthGuard
     },
     {
       path: '/college',
       name: 'college',
-      component: College
+      component: College,
+      beforeEnter: AuthGuard
     }
   ],
   mode: 'history'

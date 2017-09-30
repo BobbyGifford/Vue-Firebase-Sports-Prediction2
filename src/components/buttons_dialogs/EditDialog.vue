@@ -1,8 +1,6 @@
 <template>
   <v-dialog height="500px" width="500px" persistent v-model="toggleDialog">
-    <v-btn slot="activator">
-      <v-icon>edit</v-icon>
-    </v-btn>
+    <v-btn slot="activator"><v-icon left>edit</v-icon>Edit</v-btn>
 
   <v-card>
     <v-container>
@@ -81,8 +79,7 @@ export default {
       }
       this.$store.dispatch('editPrediction', prediction)
       this.toggleDialog = false
-      console.log(prediction)
-      location.reload()
+      this.$store.dispatch('loadPredictions')
     }
   }
 }

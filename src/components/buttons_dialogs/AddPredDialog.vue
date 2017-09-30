@@ -83,7 +83,7 @@ export default {
       }
       this.$store.dispatch('createPrediction', newPrediction)
       this.toggleDialog = false
-      this.$router.push('/predictionList')
+      this.$store.dispatch('loadPredictions')
     }
   }
 }

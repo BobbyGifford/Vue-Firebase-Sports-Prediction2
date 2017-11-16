@@ -42,5 +42,13 @@ new Vue({
         this.$store.dispatch('autoSignIn', user)
       }
     })
+  },
+  updated () {
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        this.$store.dispatch('loadPredictions')
+        this.$store.dispatch('autoSignIn', user)
+      }
+    })
   }
 })
